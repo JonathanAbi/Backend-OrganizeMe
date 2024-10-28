@@ -8,6 +8,8 @@ const db = require('./app/db')
 
 const handleErrorMiddleware = require('./app/middleware/handleError')
 const userRouter = require('./app/api/auth/router')
+const refreshTokenRouter = require('./app/api/userRefreshToken/router')
+const taskRouter = require('./app/api/task/router')
 
 app.use(cors()) //pastiin diatas router
 
@@ -17,6 +19,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/api/', userRouter)
+app.use('/api/', refreshTokenRouter)
+app.use('/api/', taskRouter)
 
 app.use(handleErrorMiddleware) //error dithrow ke handlerError lalu dihandle oleh middleware ini
 

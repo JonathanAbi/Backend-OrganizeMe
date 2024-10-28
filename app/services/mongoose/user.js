@@ -5,8 +5,9 @@ const {
   NotFoundError,
   UnauthorizedError,
 } = require("../../errors");
-const { createTokenUser, createJWT } = require("../../utils");
+const { createTokenUser, createJWT, createRefreshJWT } = require("../../utils");
 const { sendOtpEmail } = require("../email");
+const { createUserRefreshToken } = require("./refreshToken");
 
 const signUpUser = async (req) => {
   const { username, email, password } = req.body;
@@ -53,8 +54,14 @@ const signInUser = async (req) => {
   }
 
   const token = createJWT({ payload: createTokenUser(result) });
+  const refreshToken = createRefreshJWT({ payload: createTokenUser(result) });
 
-  return { token, email: result.email, username: result.username };
+  await createUserRefreshToken({
+    refreshToken,
+    user: result._id
+  })
+
+  return { token, email: result.email, username: result.username, refreshToken};
 };
 
 const verifyOtp = async (req) => {
@@ -92,7 +99,7 @@ const resendOtp = async (req) => {
 
   await sendOtpEmail(email, user);
   delete user._doc.password;
-  delete result._doc.otpCode;
+  delete user._doc.otpCode;
   return user;
 };
 module.exports = {
