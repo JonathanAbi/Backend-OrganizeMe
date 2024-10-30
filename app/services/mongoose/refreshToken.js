@@ -23,7 +23,6 @@ const getUserRefreshToken = async (req) => {
 
   const payload = isTokenValidRefreshToken({ token: result.refreshToken });
 
-  console.log(payload)
   if (email !== payload.email) {
     throw new BadRequestError("Email not valid");
   }
@@ -35,4 +34,15 @@ const getUserRefreshToken = async (req) => {
   return token;
 };
 
-module.exports = { createUserRefreshToken, getUserRefreshToken };
+const deleteUserRefreshToken = async (req) => {
+  const { userId } = req.user;
+  console.log(userId);
+  const result = UserRefreshToken.deleteOne({ user: userId });
+
+  return result;
+};
+module.exports = {
+  createUserRefreshToken,
+  getUserRefreshToken,
+  deleteUserRefreshToken,
+};

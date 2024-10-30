@@ -1,7 +1,8 @@
-const { StatusCodes } = require('http-status-codes');
+const { StatusCodes } = require("http-status-codes");
 const {
   getUserRefreshToken,
-} = require('../../services/mongoose/refreshToken');
+  deleteUserRefreshToken,
+} = require("../../services/mongoose/refreshToken");
 
 const index = async (req, res, next) => {
   try {
@@ -11,10 +12,24 @@ const index = async (req, res, next) => {
       data: { token: result },
     });
   } catch (err) {
-    console.log('err');
+    console.log("err");
+    console.log(err);
+    next(err);
+  }
+};
+const destroy = async (req, res, next) => {
+  try {
+    const result = await deleteUserRefreshToken(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+      msg: "Succesfully logout"
+    });
+  } catch (err) {
+    console.log("err");
     console.log(err);
     next(err);
   }
 };
 
-module.exports = { index };
+module.exports = { index, destroy };

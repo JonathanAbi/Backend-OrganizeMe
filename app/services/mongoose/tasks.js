@@ -16,6 +16,15 @@ const getAllTask = async (req) => {
   return result;
 };
 
+const getOneTask = async (req) => {
+  if (!req.user || !req.user.userId) {
+    throw new UnauthenticatedError("User is not authenticated.");
+  }
+  const { id } = req.params;
+  const result = await Task.findById(id);
+  return result;
+};
+
 const createTask = async (req) => {
   if (!req.user || !req.user.userId) {
     throw new UnauthenticatedError("User is not authenticated.");
@@ -66,7 +75,7 @@ const updateTask = async (req) => {
 
   await task.save();
 
-  return task
+  return task;
 };
 
 const deleteTask = async (req) => {
@@ -101,4 +110,5 @@ module.exports = {
   deleteTask,
   getAllTask,
   updateTask,
+  getOneTask
 };

@@ -13,13 +13,15 @@ const signUpUser = async (req) => {
   const { username, email, password } = req.body;
 
   let result = await User.findOne({
-    username,
     email,
-    isVerified: false,
   });
 
   if (result) {
-    throw new BadRequestError("User is registered, please verify OTP");
+    if (result.isVerified === false) {
+      throw new BadRequestError("User is registered, please verify OTP");
+    } else {
+      throw new BadRequestError("Email is already in use");
+    }
   } else {
     result = await User.create({
       username,
@@ -58,10 +60,15 @@ const signInUser = async (req) => {
 
   await createUserRefreshToken({
     refreshToken,
-    user: result._id
-  })
+    user: result._id,
+  });
 
-  return { token, email: result.email, username: result.username, refreshToken};
+  return {
+    token,
+    email: result.email,
+    username: result.username,
+    refreshToken,
+  };
 };
 
 const verifyOtp = async (req) => {
@@ -106,5 +113,5 @@ module.exports = {
   signUpUser,
   verifyOtp,
   resendOtp,
-  signInUser
+  signInUser,
 };

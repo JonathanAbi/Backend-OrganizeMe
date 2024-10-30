@@ -4,6 +4,7 @@ const {
   deleteTask,
   getAllTask,
   updateTask,
+  getOneTask,
 } = require("../../services/mongoose/tasks");
 
 const create = async (req, res, next) => {
@@ -46,6 +47,19 @@ const getAll = async (req, res, next) => {
     next(err);
   }
 };
+const getOne = async (req, res, next) => {
+  try {
+    const result = await getOneTask(req);
+
+    res.status(StatusCodes.OK).json({
+      data: result,
+    });
+  } catch (err) {
+    console.log("err");
+    console.log(err);
+    next(err);
+  }
+};
 const update = async (req, res, next) => {
   try {
     const result = await updateTask(req);
@@ -64,5 +78,6 @@ module.exports = {
   create,
   destroy,
   getAll,
-  update
+  update,
+  getOne
 };
