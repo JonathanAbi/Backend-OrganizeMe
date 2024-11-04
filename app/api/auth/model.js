@@ -13,12 +13,12 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email must be filled"],
       unique: [true, "Email must be filled"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Password must be filled"],
       minlength: [6, "Password must be more than 6 characters"],
     },
     isVerified: {

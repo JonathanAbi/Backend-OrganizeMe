@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const {
   createTask,
   deleteTask,
-  getAllTask,
+  getAllTasks,
   updateTask,
   getOneTask,
 } = require("../../services/mongoose/tasks");
@@ -36,7 +36,7 @@ const destroy = async (req, res, next) => {
 };
 const getAll = async (req, res, next) => {
   try {
-    const result = await getAllTask(req);
+    const result = await getAllTasks(req);
 
     res.status(StatusCodes.OK).json({
       data: result,

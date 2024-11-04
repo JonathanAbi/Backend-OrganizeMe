@@ -39,6 +39,14 @@ const signUpUser = async (req) => {
 
 const signInUser = async (req) => {
   const { email, password } = req.body;
+
+  if (!email) {
+    throw new BadRequestError("Please enter an email");
+  }
+  if (!password) {
+    throw new BadRequestError("Please enter a password");
+  }
+
   const result = await User.findOne({
     email,
   });
@@ -77,6 +85,7 @@ const verifyOtp = async (req) => {
   if (!user) throw new NotFoundError("User not found");
 
   if (user.isVerified) throw new BadRequestError("User already verified");
+
   if (user.otpCode === otpCode && user.otpExpiresAt > Date.now()) {
     user.isVerified = true;
     user.otpCode = null;

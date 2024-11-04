@@ -8,11 +8,41 @@ const {
   UnauthenticatedError,
 } = require("../../errors");
 
-const getAllTask = async (req) => {
+const getAllTasks = async (req) => {
   if (!req.user || !req.user.userId) {
     throw new UnauthenticatedError("User is not authenticated.");
   }
-  const result = await Task.find({ userId: req.user.userId });
+
+  const { keyword, startDate, endDate, priority, status } = req.query;
+  let condition = { userId: req.user.userId };
+
+  if (keyword) {
+    condition = { ...condition, title: { $regex: keyword, $options: "i" } };
+  }
+
+  if (priority) {
+    condition = { ...condition, priority: priority };
+  }
+
+  if (status) {
+    condition = { ...condition, status: status };
+  }
+
+  if (startDate && endDate) {
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59);
+    condition = {
+      ...condition,
+      dueDate: {
+        $gte: start,
+        $lt: end,
+      },
+    };
+  }
+
+  const result = await Task.find(condition);
   return result;
 };
 
@@ -108,7 +138,7 @@ const deleteTask = async (req) => {
 module.exports = {
   createTask,
   deleteTask,
-  getAllTask,
+  getAllTasks,
   updateTask,
-  getOneTask
+  getOneTask,
 };
