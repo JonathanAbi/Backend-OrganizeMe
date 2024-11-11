@@ -1,0 +1,12 @@
+2024-11-11T15:10:00.301Z [INFO]: Starting task reminder job...
+2024-11-11T15:10:00.323Z [INFO]: Found 2 tasks due tomorrow.
+2024-11-11T15:10:00.325Z [INFO]: Preparing to send email to: jonathanabi444@gmail.com for task: Belajar UTS Big Data
+2024-11-11T15:10:00.330Z [INFO]: Preparing to send email to: jonathanabi444@gmail.com for task: akwadawda
+2024-11-11T15:10:00.333Z [INFO]: Task reminder job completed successfully.
+2024-11-11T15:10:03.124Z [INFO]: Email sent to jonathanabi444@gmail.com
+2024-11-11T15:10:03.125Z [INFO]: Email sent to jonathanabi444@gmail.com
+2024-11-11T15:10:03.547Z [INFO]: Email sent to jonathanabi444@gmail.com
+2024-11-11T15:10:03.548Z [INFO]: Email sent to jonathanabi444@gmail.com
+2024-11-11T15:20:00.455Z [INFO]: Starting task reminder job...
+2024-11-11T15:20:00.467Z [INFO]: Found 0 tasks due tomorrow.
+2024-11-11T15:20:00.468Z [INFO]: Task reminder job completed successfully.

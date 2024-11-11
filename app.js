@@ -6,6 +6,9 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser');
 const db = require('./app/db')
 
+require("dotenv").config();
+require("./app/services/cron/taskReminder"); // Menjalankan cron job
+
 const handleErrorMiddleware = require('./app/middleware/handleError')
 const userRouter = require('./app/api/auth/router')
 const refreshTokenRouter = require('./app/api/userRefreshToken/router')

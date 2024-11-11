@@ -1,5 +1,6 @@
 const { email_user, password_user } = require("../../config");
-const nodemailer = require('nodemailer')
+const nodemailer = require("nodemailer");
+const { logger } = require("../../utils/logger");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -26,6 +27,24 @@ const sendOtpEmail = (email, result) => {
   });
 };
 
+const sendReminderEmail = async (email, subject, text) => {
+  try {
+    const mailOptions = {
+      from: '"Task Reminder" <no-reply@organizeme.com>',
+      to: email,
+      subject,
+      text,
+    };
+
+    await transporter.sendMail(mailOptions);
+    logger.info(`Email sent to ${email}`);
+  } catch (error) {
+    logger.error("Error sending email:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   sendOtpEmail,
+  sendReminderEmail,
 };

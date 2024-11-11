@@ -28,6 +28,10 @@ const taskSchema = new mongoose.Schema(
       enum: ["Pending", "In Progress", "Done"],
       default: "Pending",
     },
+    reminderSent: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,

@@ -1,5 +1,6 @@
 const Task = require("../../api/task/model");
 const User = require("../../api/auth/model");
+const moment = require("moment");
 
 const {
   BadRequestError,
@@ -135,10 +136,31 @@ const deleteTask = async (req) => {
   return result;
 };
 
+// Cari tugas yang dueDate-nya besok
+const getTasksDueTomorrow = async () => {
+  const tomorrow = moment().add(1, "day").startOf("day");
+  const endOfTomorrow = moment().add(1, "day").endOf("day");
+
+  return await Task.find({
+    dueDate: { $gte: tomorrow.toDate(), $lte: endOfTomorrow.toDate() },
+    reminderSent: false,
+  }).populate({
+    path: 'userId',
+    select: 'email'
+  }); 
+};
+
+// Tandai tugas sebagai sudah dikirimkan pengingat
+const markTaskAsReminderSent = async (taskId) => {
+  await Task.findByIdAndUpdate(taskId, { reminderSent: true });
+};
+
 module.exports = {
   createTask,
   deleteTask,
   getAllTasks,
   updateTask,
   getOneTask,
+  getTasksDueTomorrow,
+  markTaskAsReminderSent
 };
